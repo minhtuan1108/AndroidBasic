@@ -29,7 +29,7 @@ public class NoteDAO {
     public void editNote(Note note, Integer id){
         String sql = "UPDATE Note SET Ten='" + note.getName() + "', NoiDung='"
                 + note.getContent() + "', BaoThuc='"
-                + note.getAlarmTime().toString() + "' WHERE id = '" + id + "')";
+                + note.getAlarmTime().toString() + "' WHERE id = '" + id + "'";
         dbConnector.updateData(sql);
     }
 

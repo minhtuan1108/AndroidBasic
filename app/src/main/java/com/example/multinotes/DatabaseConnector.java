@@ -30,16 +30,16 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         stmt.execute();
     }
 
-    public long insertData(String sql){
+    public void insertData(String sql){
         SQLiteDatabase db = getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(sql);
-        return stmt.executeInsert();
+        stmt.executeInsert();
     }
 
-    public int updateData(String sql){
+    public void updateData(String sql){
         SQLiteDatabase db = getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(sql);
-        return stmt.executeUpdateDelete();
+        stmt.executeUpdateDelete();
     }
 
     public Cursor getData(String sql){

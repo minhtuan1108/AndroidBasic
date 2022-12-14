@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         newNoteName = (EditText) popupView.findViewById(R.id.new_note_name);
         newNoteContent = (EditText) popupView.findViewById(R.id.new_note_content);
 
+        //Set sự kiện cho nút thêm
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Set sự kiện cho popup menu thêm note mới
         popupView.findViewById(R.id.container_popup_window).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Set sự kiện cho nút chọn ảnh
         pickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,20 +112,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Set sự kiện cho nút save (tạo) note mới
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = ((EditText) popupView.findViewById(R.id.new_note_name)).getText().toString();
                 String content = ((EditText) popupView.findViewById(R.id.new_note_content)).getText().toString();
-                addNewNote(name, content, listUriImage);
-                listUriImage.clear();
-                popupWindow.dismiss();
+
+                if(!name.equals("")){
+                    addNewNote(name, content, listUriImage);
+                    listUriImage.clear();
+                    popupWindow.dismiss();
+                }else{
+                    Toast.makeText(MainActivity.this, "Name cannot empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
 
         //Show note trong database
-        showListNoteDemo(noteAdapter, recyclerViewNote, sortByTime(noteDAO.selectAllNote(), false));
+        showListNoteDemo(sortByTime(noteDAO.selectAllNote(), false));
     }
 
     public void addNewNote(String name, String contents, ArrayList<Uri> uriArrayList){
@@ -133,16 +144,16 @@ public class MainActivity extends AppCompatActivity {
             uriDAO.insertUri(new UriDTO(uriArrayList.get(i), note.getId()));
         }
 
-        showListNoteDemo(noteAdapter, recyclerViewNote, sortByTime(listNote, false));
+        showListNoteDemo(sortByTime(listNote, false));
     }
 
-    public void showListNoteDemo(NoteAdapter adapterNote, RecyclerView recyclerView, ArrayList<Note> lsNote){
-        adapterNote = new NoteAdapter(lsNote, this);
-        recyclerView.setAdapter(adapterNote);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    public void showListNoteDemo(ArrayList<Note> lsNote){
+        noteAdapter = new NoteAdapter(lsNote, this);
+        recyclerViewNote.setAdapter(noteAdapter);
+        recyclerViewNote.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
-    public ArrayList<Note> sortByTime(ArrayList<Note> list, boolean increase){
+    public static ArrayList<Note> sortByTime(ArrayList<Note> list, boolean increase){
 
 //        Note temp;
         if(!increase){
@@ -169,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void wrapNote(Note a, Note b){
+    public static void wrapNote(Note a, Note b){
         Note tmp = new Note();
 
         tmp.setId(a.getId());
@@ -222,7 +233,19 @@ public class MainActivity extends AppCompatActivity {
             layoutParams.height = 0;
             recyclerView.setLayoutParams(layoutParams);
         }
+    }
 
-
+    int countPressBackTimes = 0;
+    @Override
+    public void onBackPressed() {
+        countPressBackTimes++;
+        if(countPressBackTimes == 1){
+            Toast.makeText(this, "Press back button again to exit app", Toast.LENGTH_SHORT).show();
+        }else{
+            if(countPressBackTimes == 2){
+                super.onBackPressed();
+                countPressBackTimes = 0;
+            }
+        }
     }
 }

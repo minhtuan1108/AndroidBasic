@@ -1,15 +1,19 @@
 package com.example.multinotes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -57,6 +61,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        MainActivity mainActivity = new MainActivity();
         public Context parentContext;
         public View itemView;
         public TextView name;
@@ -64,6 +69,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         public TextView content;
         private Note note;
         private Integer idNote;
+        private ImageView deleteButton;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -71,6 +78,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
             this.name = this.itemView.findViewById(R.id.note_name);
             this.dateCreate = this.itemView.findViewById(R.id.note_date_create);
             this.content = this.itemView.findViewById(R.id.note_content);
+            //Button xóa trong note demo
+            this.deleteButton = (ImageView) itemView.findViewById(R.id.delete_icon);
+
+            //Set sự kiện nhấn vào để xem chi tiết note
             this.itemView.findViewById(R.id.note_panel).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,6 +89,37 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
 
                     iGetContactInfo.putExtra("noteObject", note);
                     parentContext.startActivity(iGetContactInfo);
+                }
+            });
+
+            //Set sự kiện cho nút xóa note
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NoteDAO noteDAO = new NoteDAO(new DatabaseConnector(mCtx, "mutipleNote.sqlite",null, 1));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
+                    builder.setMessage("Are you sure to delete " + note.getName() + " ?");
+
+                    //Set nút đồng ý xóa cho builder
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            noteDAO.deleteNote(note.getId());
+                            Toast.makeText(parentContext, "Deleted " + note.getName() + " successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getParentContext(), MainActivity.class);
+                            mCtx.startActivity(intent);
+                        }
+                    });
+
+                    //Set nút không đồng ý cho builder
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    builder.show();
                 }
             });
         }
