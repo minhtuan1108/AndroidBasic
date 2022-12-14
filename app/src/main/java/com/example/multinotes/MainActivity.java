@@ -29,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Note> listNote = new ArrayList<>();
     ArrayList<Uri> listUriImage = new ArrayList<>();
 
-    NoteAdapter noteAdapter;
+    static NoteAdapter noteAdapter;
     ImageAdapter imageAdapter;
-    RecyclerView recyclerViewNote, recyclerViewImage;
+    static RecyclerView recyclerViewNote;
+    RecyclerView recyclerViewImage;
     ImageView addButton;
     ImageView helpButton;
     PopupWindow popupWindow;
@@ -147,10 +148,10 @@ public class MainActivity extends AppCompatActivity {
         showListNoteDemo(sortByTime(listNote, false));
     }
 
-    public void showListNoteDemo(ArrayList<Note> lsNote){
-        noteAdapter = new NoteAdapter(lsNote, this);
+    public static void showListNoteDemo(ArrayList<Note> lsNote){
+        noteAdapter = new NoteAdapter(lsNote, recyclerViewNote.getContext());
         recyclerViewNote.setAdapter(noteAdapter);
-        recyclerViewNote.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewNote.setLayoutManager(new LinearLayoutManager(recyclerViewNote.getContext(), LinearLayoutManager.VERTICAL, false));
     }
 
     public static ArrayList<Note> sortByTime(ArrayList<Note> list, boolean increase){

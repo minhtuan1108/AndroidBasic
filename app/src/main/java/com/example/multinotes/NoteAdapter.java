@@ -61,7 +61,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        MainActivity mainActivity = new MainActivity();
         public Context parentContext;
         public View itemView;
         public TextView name;
@@ -69,7 +68,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         public TextView content;
         private Note note;
         private Integer idNote;
-        private ImageView deleteButton;
 
 
         public ViewHolder(View itemView) {
@@ -79,7 +77,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
             this.dateCreate = this.itemView.findViewById(R.id.note_date_create);
             this.content = this.itemView.findViewById(R.id.note_content);
             //Button xóa trong note demo
-            this.deleteButton = (ImageView) itemView.findViewById(R.id.delete_icon);
+            ImageView deleteButton = (ImageView) itemView.findViewById(R.id.delete_icon);
 
             //Set sự kiện nhấn vào để xem chi tiết note
             this.itemView.findViewById(R.id.note_panel).setOnClickListener(new View.OnClickListener() {
@@ -111,7 +109,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
 //                            Intent intent = new Intent(getParentContext(), MainActivity.class);
 //                            mCtx.startActivity(intent);
 
-//                            mainActivity.showListNoteDemo(MainActivity.sortByTime(noteDAO.selectAllNote(), false));
+                            MainActivity.showListNoteDemo(MainActivity.sortByTime(noteDAO.selectAllNote(), false));
                         }
                     });
 
