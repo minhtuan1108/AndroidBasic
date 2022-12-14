@@ -55,13 +55,11 @@ public class UriDAO{
     }
 
     public ArrayList<UriDTO> selectAllUriByNoteId(Integer noteId){
-        Cursor data = dbConnector.getData("SELECT * FROM Uri WHERE idNote='" + noteId + "'");
+        Cursor data = dbConnector.getData("SELECT * FROM Uri WHERE idNote=" + noteId);
         ArrayList<UriDTO> listUri = new ArrayList<>();
-        UriDTO uriDTO;
 
         while (data.moveToNext()){
-            uriDTO = new UriDTO(data.getInt(0), Uri.parse(data.getString(1)), data.getInt(2));
-            listUri.add(uriDTO);
+            listUri.add(new UriDTO(data.getInt(0), Uri.parse(data.getString(1)), data.getInt(2)));
         }
         return listUri;
     }

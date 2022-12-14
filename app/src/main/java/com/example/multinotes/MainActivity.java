@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView addButton;
     ImageView helpButton;
     PopupWindow popupWindow;
+    EditText newNoteName, newNoteContent;
     ImageView pickImage;
     TextView saveButton;
     View popupView;
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         pickImage = (ImageView) popupView.findViewById(R.id.pick_image);
         saveButton = (TextView) popupView.findViewById(R.id.button_add);
         recyclerViewImage = (RecyclerView) popupView.findViewById(R.id.list_image);
-        EditText newNoteName = (EditText) popupView.findViewById(R.id.new_note_name);
-        EditText newNoteContent = (EditText) popupView.findViewById(R.id.new_note_content);
+        newNoteName = (EditText) popupView.findViewById(R.id.new_note_name);
+        newNoteContent = (EditText) popupView.findViewById(R.id.new_note_content);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,16 +172,19 @@ public class MainActivity extends AppCompatActivity {
     public void wrapNote(Note a, Note b){
         Note tmp = new Note();
 
+        tmp.setId(a.getId());
         tmp.setName(a.getName());
         tmp.setContent(a.getContent());
         tmp.setDateCreate(a.getDateCreate());
         tmp.setAlarmTime(a.getAlarmTime());
 
+        a.setId(b.getId());
         a.setName(b.getName());
         a.setContent(b.getContent());
         a.setDateCreate(b.getDateCreate());
         a.setAlarmTime(b.getAlarmTime());
 
+        b.setId(tmp.getId());
         b.setName(tmp.getName());
         b.setContent(tmp.getContent());
         b.setDateCreate(tmp.getDateCreate());
@@ -201,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             showListPicturePicked(imageAdapter, recyclerViewImage, listUriImage);
+            newNoteContent.setText(listUriImage.get(0).toString());
         }
     }
 

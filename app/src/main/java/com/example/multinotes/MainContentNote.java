@@ -15,10 +15,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainContentNote extends Activity {
-    private EditText contentView, nameNote;
-    private RecyclerView recyclerViewListImage;
-    private ImageView buttonSave;
-    private ImageAdapter adapter;
+    EditText contentView, nameNote;
+    RecyclerView recyclerViewListImage;
+    ImageView buttonSave;
+    ImageAdapter adapterImage;
+
+    DatabaseConnector databaseConnector = new DatabaseConnector(this, "mutipleNote.sqlite",null, 1);
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -27,14 +29,13 @@ public class MainContentNote extends Activity {
         setContentView(R.layout.activity_main_content_note);
         nameNote = findViewById(R.id.name_detail_note);
         contentView = findViewById(R.id.content_detail_note);
-        recyclerViewListImage = findViewById((R.id.list_image_in_main));
+        recyclerViewListImage = (RecyclerView) findViewById(R.id.list_image_in_main);
         buttonSave = findViewById(R.id.save_change);
 
         Note note = (Note) getIntent().getSerializableExtra("noteObject");
-        UriDAO uriDAO = new UriDAO(new DatabaseConnector(this, "mutipleNote.sqlite",null, 1));
-
+        UriDAO uriDAO = new UriDAO(databaseConnector);
         nameNote.setText(note.getName());
-        String test = "";
+
 
         ArrayList<UriDTO> listUriDTO = uriDAO.selectAllUriByNoteId(note.getId());
 
@@ -42,19 +43,18 @@ public class MainContentNote extends Activity {
             ArrayList<Uri> uriImageList = new ArrayList<>();
             for(int i = 0; i < listUriDTO.size(); i++){
                 uriImageList.add(listUriDTO.get(i).getImage());
-                test += listUriDTO.get(i).getImage().toString() + "\n";
             }
 
-            showImageInNoteDetail(adapter, recyclerViewListImage, uriImageList);
+            contentView.setText(uriImageList.get(0).toString());
+            showImageInNoteDetail(uriImageList);
         }
 
-//        contentView.setText(test);
     }
 
-    public void showImageInNoteDetail(ImageAdapter adapter, RecyclerView recyclerView, ArrayList<Uri> uriImageList){
-        adapter = new ImageAdapter(uriImageList, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    public void showImageInNoteDetail(ArrayList<Uri> uriImageList){
+        adapterImage = new ImageAdapter(uriImageList, this);
+        recyclerViewListImage.setAdapter(adapterImage);
+        recyclerViewListImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
     }
 }

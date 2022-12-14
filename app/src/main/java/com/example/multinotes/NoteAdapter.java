@@ -16,15 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
-    public List notes;
+    public ArrayList<Note> notes;
     public Context mCtx;
 
-    public NoteAdapter(List notes, Context mCtx) {
+    public NoteAdapter(ArrayList<Note> notes, Context mCtx) {
         this.notes = notes;
         this.mCtx = mCtx;
     }
 
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -32,8 +33,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
 
         //Nạp layout của View Note
         View noteView = inflater.inflate(R.layout.note_demo, parent, false);
-        ViewHolder viewHolder = new ViewHolder(noteView);
-        return viewHolder;
+        return new ViewHolder(noteView);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         holder.content.setText(note.getContent());
     }
 
-    public void updateList(List newList){
+    public void updateList(ArrayList<Note> newList){
         notes = newList;
     }
 

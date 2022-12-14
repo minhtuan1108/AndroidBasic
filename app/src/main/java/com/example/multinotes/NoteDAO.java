@@ -55,11 +55,9 @@ public class NoteDAO {
     public ArrayList<Note> selectAllNote(){
         Cursor data = dbConnector.getData("SELECT * FROM Note");
         ArrayList<Note> listNote = new ArrayList<>();
-        Note note;
 
         while (data.moveToNext()){
-            note = new Note(data.getInt(0), data.getString(1), data.getString(2), new Date(data.getString(3)), new Date(data.getString(4)));
-            listNote.add(note);
+            listNote.add(new Note(data.getInt(0), data.getString(1), data.getString(2), new Date(data.getString(3)), new Date(data.getString(4))));
         }
         return listNote;
     }

@@ -11,13 +11,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
-    public List listImage;
+    public ArrayList<Uri> listImage;
     public Context myContext;
 
-    public ImageAdapter(List listImage, Context myContext) {
+    public ImageAdapter(ArrayList<Uri> listImage, Context myContext) {
         this.listImage = listImage;
         this.myContext = myContext;
     }
@@ -36,9 +37,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Uri uri = (Uri) listImage.get(position);
+        Uri uri = listImage.get(position);
         holder.setParentCtx(myContext);
-        holder.getImg().setImageURI(uri);
+        holder.img.setImageURI(uri);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private Context parentCtx;
-        private ImageView img;
+        public ImageView img;
         public View itemview;
 
         public ViewHolder(@NonNull View itemView) {
