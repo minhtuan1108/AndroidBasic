@@ -97,6 +97,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     NoteDAO noteDAO = new NoteDAO(new DatabaseConnector(mCtx, "mutipleNote.sqlite",null, 1));
+                    UriDAO uriDAO = new UriDAO(new DatabaseConnector(mCtx, "mutipleNote.sqlite",null, 1));
                     AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
                     builder.setMessage("Are you sure to delete " + note.getName() + " ?");
 
@@ -105,9 +106,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             noteDAO.deleteNote(note.getId());
+                            uriDAO.deleteUriByNoteId(note.getId());
                             Toast.makeText(parentContext, "Deleted " + note.getName() + " successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getParentContext(), MainActivity.class);
-                            mCtx.startActivity(intent);
+//                            Intent intent = new Intent(getParentContext(), MainActivity.class);
+//                            mCtx.startActivity(intent);
+
+//                            mainActivity.showListNoteDemo(MainActivity.sortByTime(noteDAO.selectAllNote(), false));
                         }
                     });
 

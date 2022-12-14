@@ -63,4 +63,9 @@ public class UriDAO{
         }
         return listUri;
     }
+
+    public void deleteUriByNoteId(Integer noteId){
+        String sql = "DELETE FROM Uri WHERE idNote = '" + noteId + "'";
+        dbConnector.updateData(sql);
+    }
 }

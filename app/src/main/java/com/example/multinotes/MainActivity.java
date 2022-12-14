@@ -216,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             showListPicturePicked(imageAdapter, recyclerViewImage, listUriImage);
-            newNoteContent.setText(listUriImage.get(0).toString());
         }
     }
 
