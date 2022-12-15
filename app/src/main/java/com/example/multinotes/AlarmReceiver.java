@@ -3,6 +3,7 @@ package com.example.multinotes;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,10 +19,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
         Intent myIntent = new Intent(context, PlayAlarmMusic.class);
-        myIntent.putExtra("status", "on");
+        myIntent.putExtra("status", statusValue);
         myIntent.putExtra("idNote", idNote);
 
         context.startService(myIntent);
-
     }
 }

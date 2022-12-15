@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
@@ -33,7 +34,7 @@ public class TimeAlarmPicker extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainContentNote.class);
         intent.putExtra("noteObject", note);
         startActivity(intent);
     }
@@ -97,13 +98,17 @@ public class TimeAlarmPicker extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 textTime.setText("Dừng lại");
-                alarmManager.cancel(pendingIntent);
-                intent.putExtra("status", "off");
-                sendBroadcast(intent);
+                if(pendingIntent != null){
+                    alarmManager.cancel(pendingIntent);
+                    intent.putExtra("status", "off");
+                    Log.i("> APP: ", "onClick: Time Alarm Picker");
+                    sendBroadcast(intent);
+                }
+
             }
         });
 
-        
+
 
     }
 }
