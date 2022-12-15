@@ -16,10 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MultiNotes"
         tools:targetApi="31">
-        <activity
-            android:name=".TimeAlarmPicker"
-            android:exported="true">
+        <activity android:name=".TimeAlarmPicker"/>
 
+
+        <activity android:name=".MainContentNote"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,21 +33,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-<!--        <activity android:name=".MainContentNote"></activity>-->
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
+        <receiver android:name=".AlarmReceiver"/>
+        <service android:name=".PlayAlarmMusic"
+            android:enabled="true"/>
     </application>
 
 </manifest>

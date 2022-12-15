@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class MainContentNote extends Activity {
     EditText contentView, nameNote;
     RecyclerView recyclerViewListImage;
-    ImageView buttonSave;
+    ImageView buttonSave, buttonSetAlarm;
     ImageAdapter adapterImage;
     boolean isChanged = false;
 
@@ -36,6 +36,7 @@ public class MainContentNote extends Activity {
         contentView = findViewById(R.id.content_detail_note);
         recyclerViewListImage = (RecyclerView) findViewById(R.id.list_image_in_main);
         buttonSave = findViewById(R.id.save_change);
+        buttonSetAlarm = findViewById(R.id.alarm_button);
 
         Note note = (Note) getIntent().getSerializableExtra("noteObject");
         NoteDAO noteDAO = new NoteDAO(databaseConnector);
@@ -89,6 +90,15 @@ public class MainContentNote extends Activity {
 //            showImageInNoteDetail(uriImageList);
 //        }
 
+        buttonSetAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TimeAlarmPicker.class);
+                intent.putExtra("idNote", note.getId());
+                intent.putExtra("noteObject", note);
+                startActivity(intent);
+            }
+        });
     }
 
     public void showImageInNoteDetail(ArrayList<Uri> uriImageList){
